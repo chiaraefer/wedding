@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { useLanguage } from '@/contexts/LanguageContext';
-import { Home, X, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Home, X, ChevronLeft, ChevronRight, Play, Film, Sparkles } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import LanguageSelector from '@/components/LanguageSelector';
 
@@ -19,22 +19,38 @@ const GALLERY_IMAGES = [
   { id: 10, src: 'https://i.imgur.com/KUecNJH.jpeg', alt: 'Wedding moment 10' },
 ];
 
+const VIDEO_URL = 'https://pub-e9a9c73a3a684a2b88b5685f667cb0e0.r2.dev/TRAILER.mp4';
+
 const Pictures = () => {
   const { language } = useLanguage();
   const [selectedImageIndex, setSelectedImageIndex] = useState<number | null>(null);
 
   const titles: Record<string, string> = {
-    es: 'Fotos',
-    it: 'Foto',
-    scn: 'Fotografii',
-    en: 'Pictures',
+    es: 'Nuestros Recuerdos',
+    it: 'I Nostri Ricordi',
+    scn: 'Li Nostri Ricordi',
+    en: 'Our Memories',
   };
 
   const descriptions: Record<string, string> = {
-    es: 'Aquí puedes ver y compartir todos los momentos más especiales de nuestra boda',
-    it: 'Qui puoi vedere e condividere tutti i momenti più belli del nostro matrimonio',
-    scn: 'Ccà pôi vìdiri e spartìri tutti li mumenti cchiù belli dû nostru matrimoniu',
-    en: 'Here you can view and share all the most beautiful moments of our wedding',
+    es: 'Revive el tráiler de nuestro gran día y explora los momentos más especiales.',
+    it: 'Rivivi il trailer del nostro grande giorno ed esplora i momenti più speciali.',
+    scn: 'Rivivi lu trailer dû nostru granni jornu e talia li mumenti cchiù beddi.',
+    en: 'Relive the trailer of our special day and explore our favorite moments.',
+  };
+
+  const videoBadge: Record<string, string> = {
+    es: 'Tráiler Oficial',
+    it: 'Trailer Ufficiale',
+    scn: 'Trailer Ufficiali',
+    en: 'Official Trailer',
+  };
+
+  const photoSectionTitle: Record<string, string> = {
+    es: 'Galería de Fotos',
+    it: 'Galleria Fotografica',
+    scn: 'Gallarìa Fotugràfica',
+    en: 'Photo Highlights',
   };
 
   const openLightbox = (index: number) => {
@@ -62,10 +78,11 @@ const Pictures = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-romantic py-20 flex flex-col relative">
+    <div className="min-h-screen bg-gradient-romantic py-16 md:py-24 flex flex-col relative">
+      {/* Navigation Buttons */}
       <div className="fixed top-4 left-4 z-40">
         <Link to="/">
-          <Button variant="outline" size="sm" className="bg-background/80 backdrop-blur-sm">
+          <Button variant="outline" size="sm" className="bg-background/80 backdrop-blur-sm shadow-sm hover:bg-background">
             <Home className="w-4 h-4 mr-2" />
             {language === 'es' ? 'Inicio' :
               language === 'it' ? 'Home' :
@@ -79,103 +96,124 @@ const Pictures = () => {
         <LanguageSelector />
       </div>
 
-      <div className="container mx-auto px-4 flex-1 flex flex-col z-10">
-        <div className="text-center mb-12">
-          <h1 className="font-script text-5xl md:text-7xl text-primary mb-4">
+      <div className="container mx-auto px-4 flex-1 flex flex-col z-10 max-w-6xl">
+        {/* Header Section */}
+        <div className="text-center mb-10 md:mb-14">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-semibold tracking-wider uppercase mb-3">
+            <Sparkles className="w-3.5 h-3.5" />
+            <span>Wedding Film & Photos</span>
+          </div>
+          <h1 className="font-script text-5xl md:text-7xl lg:text-8xl text-primary mb-4 drop-shadow-sm">
             {titles[language] || titles.en}
           </h1>
-          <p className="text-muted-foreground text-lg mb-6">
+          <p className="text-muted-foreground text-base md:text-lg max-w-xl mx-auto">
             {descriptions[language] || descriptions.en}
           </p>
+        </div>
 
-          {/* External Album Links */}
-          <div className="flex flex-col sm:flex-row justify-center items-center gap-4 mt-2">
-            <a
-              href="https://web.dotstheapp.com/a?group=2497410&dlBy=weddingchiarafer&code=qna9stjxJGoC"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-3 bg-white/80 backdrop-blur-sm border border-white/40 shadow-md rounded-2xl px-5 py-3 hover:shadow-lg hover:scale-105 transition-all duration-200 w-full sm:w-auto max-w-xs"
-            >
-              <img
-                src="https://play-lh.googleusercontent.com/PUrfNOl2Oj-L-2bbKH1DBZxU1J6KaPbty-PkeVsrB4yLvpovppCoYxcpfa5dx5SPM1_1i9eJvTsH2eSZJHgRUg"
-                alt="Dots App"
-                className="h-10 w-10 object-contain rounded-xl flex-shrink-0"
-              />
-              <div className="text-left">
-                <p className="text-xs text-muted-foreground font-medium uppercase tracking-wide">
-                  {language === 'es' ? 'Ver álbum en' : language === 'it' ? 'Vedi album su' : language === 'scn' ? 'Talia àlbum nta' : 'View album on'}
-                </p>
-                <p className="text-sm font-bold text-foreground">Dots App →</p>
-              </div>
-            </a>
-
-            <a
-              href="https://photos.app.goo.gl/KbzzFF91UNkQKc9F9"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-3 bg-white/80 backdrop-blur-sm border border-white/40 shadow-md rounded-2xl px-5 py-3 hover:shadow-lg hover:scale-105 transition-all duration-200 w-full sm:w-auto max-w-xs"
-            >
-              <img
-                src="https://logos-world.net/wp-content/uploads/2022/05/Google-Photos-Logo.png"
-                alt="Google Photos"
-                className="h-8 w-auto object-contain flex-shrink-0"
-              />
-              <div className="text-left">
-                <p className="text-xs text-muted-foreground font-medium uppercase tracking-wide">
-                  {language === 'es' ? 'Ver álbum en' : language === 'it' ? 'Vedi album su' : language === 'scn' ? 'Talia àlbum nta' : 'View album on'}
-                </p>
-                <p className="text-sm font-bold text-foreground">Google Photos →</p>
-              </div>
-            </a>
+        {/* Hero Video Section */}
+        <div className="mb-16 md:mb-20">
+          <div className="relative group rounded-3xl overflow-hidden shadow-2xl border border-white/40 bg-black/90 aspect-video md:aspect-[21/9] max-h-[600px] w-full">
+            <video
+              className="w-full h-full object-cover"
+              src={VIDEO_URL}
+              autoPlay
+              muted
+              loop
+              playsInline
+              controls
+            />
+            {/* Top video label */}
+            <div className="absolute top-4 left-4 pointer-events-none flex items-center gap-2 bg-black/50 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-white/20 text-white text-xs font-medium tracking-wide">
+              <Film className="w-3.5 h-3.5 text-primary" />
+              <span>{videoBadge[language] || videoBadge.en}</span>
+            </div>
           </div>
         </div>
 
-        {/* Masonry/Grid Gallery */}
-        <div className="max-w-6xl mx-auto w-full">
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
-            {GALLERY_IMAGES.map((img, index) => (
-              <div
-                key={img.id}
-                className="relative aspect-square overflow-hidden rounded-xl shadow-romantic cursor-pointer group"
-                onClick={() => openLightbox(index)}
-              >
-                <img
-                  src={img.src}
-                  alt={img.alt}
-                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                  loading="lazy"
-                />
-                <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                  <span className="text-white bg-black/50 px-4 py-2 rounded-full text-sm font-medium backdrop-blur-sm">
-                    View
-                  </span>
-                </div>
-              </div>
-            ))}
+        {/* Photos Header & External Link */}
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mb-8 pb-4 border-b border-foreground/10">
+          <div>
+            <h2 className="text-2xl md:text-3xl font-serif font-semibold text-foreground">
+              {photoSectionTitle[language] || photoSectionTitle.en}
+            </h2>
+            <p className="text-sm text-muted-foreground">
+              {GALLERY_IMAGES.length} {language === 'es' ? 'fotos destacadas' : language === 'it' ? 'foto in evidenza' : 'featured photos'}
+            </p>
           </div>
+
+          {/* Google Photos Album Link (Dots App removed) */}
+          <a
+            href="https://photos.app.goo.gl/KbzzFF91UNkQKc9F9"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-3 bg-white/90 backdrop-blur-md border border-white/60 shadow-sm hover:shadow-md rounded-2xl px-4 py-2.5 hover:scale-[1.02] transition-all duration-200 w-full sm:w-auto"
+          >
+            <img
+              src="https://logos-world.net/wp-content/uploads/2022/05/Google-Photos-Logo.png"
+              alt="Google Photos"
+              className="h-6 w-auto object-contain flex-shrink-0"
+            />
+            <div className="text-left pr-1">
+              <p className="text-[11px] text-muted-foreground font-medium uppercase tracking-wide leading-tight">
+                {language === 'es' ? 'Álbum completo en' : language === 'it' ? 'Album completo su' : language === 'scn' ? 'Àlbum cumpletu nta' : 'Full album on'}
+              </p>
+              <p className="text-xs md:text-sm font-bold text-foreground leading-tight">Google Photos →</p>
+            </div>
+          </a>
+        </div>
+
+        {/* Gallery Grid */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-5">
+          {GALLERY_IMAGES.map((img, index) => (
+            <div
+              key={img.id}
+              className={`relative overflow-hidden rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer group bg-muted ${
+                index % 5 === 0 ? 'sm:col-span-2 sm:row-span-2 aspect-[4/3] sm:aspect-square' : 'aspect-square'
+              }`}
+              onClick={() => openLightbox(index)}
+            >
+              <img
+                src={img.src}
+                alt={img.alt}
+                className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                loading="lazy"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-between p-4">
+                <span className="text-white text-xs md:text-sm font-medium tracking-wide bg-white/20 backdrop-blur-md px-3 py-1 rounded-full border border-white/30">
+                  {img.alt}
+                </span>
+                <span className="text-white text-xs bg-black/40 px-2.5 py-1 rounded-full">
+                  #{index + 1}
+                </span>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
 
       {/* Lightbox / Slideshow */}
       {selectedImageIndex !== null && (
         <div
-          className="fixed inset-0 z-50 bg-black/95 backdrop-blur-sm flex items-center justify-center"
+          className="fixed inset-0 z-50 bg-black/95 backdrop-blur-md flex items-center justify-center animate-in fade-in duration-200"
           onClick={closeLightbox}
         >
           {/* Close Button */}
           <button
-            className="absolute top-4 right-4 md:top-6 md:right-6 text-white/70 hover:text-white p-2 rounded-full hover:bg-white/10 transition-colors z-50"
+            className="absolute top-4 right-4 md:top-6 md:right-6 text-white/70 hover:text-white p-2.5 rounded-full hover:bg-white/10 transition-colors z-50"
             onClick={closeLightbox}
+            aria-label="Close lightbox"
           >
-            <X className="w-8 h-8" />
+            <X className="w-7 h-7" />
           </button>
 
           {/* Previous Button */}
           <button
-            className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 text-white/70 hover:text-white p-3 rounded-full hover:bg-white/10 transition-colors z-50"
+            className="absolute left-3 md:left-6 top-1/2 -translate-y-1/2 text-white/70 hover:text-white p-3 rounded-full hover:bg-white/10 transition-colors z-50"
             onClick={showPrev}
+            aria-label="Previous photo"
           >
-            <ChevronLeft className="w-10 h-10" />
+            <ChevronLeft className="w-8 h-8 md:w-10 md:h-10" />
           </button>
 
           {/* Main Image */}
@@ -183,21 +221,22 @@ const Pictures = () => {
             <img
               src={GALLERY_IMAGES[selectedImageIndex].src}
               alt={GALLERY_IMAGES[selectedImageIndex].alt}
-              className="max-w-full max-h-full object-contain drop-shadow-2xl select-none"
+              className="max-w-full max-h-full object-contain rounded-lg drop-shadow-2xl select-none"
               onClick={(e) => e.stopPropagation()} // Prevent clicking image from closing lightbox
             />
           </div>
 
           {/* Next Button */}
           <button
-            className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 text-white/70 hover:text-white p-3 rounded-full hover:bg-white/10 transition-colors z-50"
+            className="absolute right-3 md:right-6 top-1/2 -translate-y-1/2 text-white/70 hover:text-white p-3 rounded-full hover:bg-white/10 transition-colors z-50"
             onClick={showNext}
+            aria-label="Next photo"
           >
-            <ChevronRight className="w-10 h-10" />
+            <ChevronRight className="w-8 h-8 md:w-10 md:h-10" />
           </button>
 
           {/* Image Counter */}
-          <div className="absolute bottom-6 left-1/2 -translate-x-1/2 text-white/70 font-medium tracking-widest text-sm">
+          <div className="absolute bottom-6 left-1/2 -translate-x-1/2 text-white/80 font-medium tracking-widest text-xs md:text-sm bg-black/40 backdrop-blur-sm px-4 py-1.5 rounded-full border border-white/10">
             {selectedImageIndex + 1} / {GALLERY_IMAGES.length}
           </div>
         </div>
