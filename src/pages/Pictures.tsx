@@ -8,6 +8,14 @@ import { PhotoSlideshow } from '@/components/PhotoSlideshow';
 const VIDEO_URL = 'https://pub-e9a9c73a3a684a2b88b5685f667cb0e0.r2.dev/TRAILER.mp4';
 const PHOTO_BASE_URL = 'https://pub-53e20bc651c2446297f2234b29bea899.r2.dev';
 
+const isAllowedPhoto = (photo: { src: string }) => {
+  const match = photo.src.match(/photo_0*(\d+)\.webp/);
+  if (!match) return true;
+  const num = parseInt(match[1], 10);
+  // Exclude range 800 -> 900
+  return num < 800 || num > 900;
+};
+
 const Pictures = () => {
   const { language } = useLanguage();
 
@@ -138,6 +146,7 @@ const Pictures = () => {
             embedded={true}
             baseUrl={PHOTO_BASE_URL}
             initialIndex={240}
+            filterPhoto={isAllowedPhoto}
           />
         </div>
       </div>

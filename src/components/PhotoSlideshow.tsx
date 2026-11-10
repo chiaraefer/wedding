@@ -40,6 +40,8 @@ export interface PhotoSlideshowProps {
    * Fullscreen button will still expand this container to true full-screen.
    */
   embedded?: boolean;
+  /** Optional filter function to exclude problematic or missing images */
+  filterPhoto?: (photo: PhotoManifestItem, index: number) => boolean;
 }
 
 /**
@@ -60,6 +62,7 @@ export const PhotoSlideshow: React.FC<PhotoSlideshowProps> = ({
   onClose,
   initialIndex = 0,
   embedded = false,
+  filterPhoto,
 }) => {
   const [photos, setPhotos] = useState<PhotoManifestItem[]>([]);
   const [manifestLoading, setManifestLoading] = useState(true);
@@ -122,8 +125,12 @@ export const PhotoSlideshow: React.FC<PhotoSlideshowProps> = ({
         if (!Array.isArray(data) || data.length === 0) {
           throw new Error('Manifest is empty or invalid format.');
         }
-        setPhotos(data);
-        const safeInitial = Math.min(Math.max(0, initialIndex), data.length - 1);
+        const filteredData = filterPhoto ? data.filter(filterPhoto) : data;
+        if (filteredData.length === 0) {
+          throw new Error('All photographs were filtered out.');
+        }
+        setPhotos(filteredData);
+        const safeInitial = Math.min(Math.max(0, initialIndex), filteredData.length - 1);
         setCurrentIndex(safeInitial);
         setManifestLoading(false);
       })
